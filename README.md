@@ -30,6 +30,8 @@ For example:
 
 ## Setup instructions
 
+This bot is not set to public, but you can set up your own instance by following these instructions.
+
 ### Prerequisites
 
 - Node.js 12.0.0 or newer
