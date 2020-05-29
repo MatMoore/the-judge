@@ -2,12 +2,12 @@ require("dotenv").config();
 
 const Discord = require("discord.js");
 const { Client } = require("pg");
-const { ScoreFetcher } = require("./data");
+const { ScoreDatabase } = require("./data");
 const { parseCommands, commands } = require("./commands");
 
 const discord = new Discord.Client();
 const db = new Client();
-const scoreFetcher = new ScoreFetcher(db);
+const scoreDatabase = new ScoreDatabase(db);
 
 db.connect();
 
@@ -38,7 +38,7 @@ const replyHelp = (message) => {
 };
 
 const replyScores = async (message) => {
-  const result = await scoreFetcher.scores();
+  const result = await scoreDatabase.scores();
   const rows = result.rows;
   if (rows.length === 0) {
     message.reply("no points have been awarded yet!");
@@ -62,7 +62,7 @@ const replyGive = async (message, { mentions, numberOfPoints, author }) => {
       actualPoints = numberOfPoints;
     }
 
-    await scoreFetcher.increment(mention.id, mention.username, actualPoints);
+    await scoreDatabase.increment(mention.id, mention.username, actualPoints);
     message.reply(`${actualPoints} points to ${mention.username}!`);
   });
 };

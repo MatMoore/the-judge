@@ -1,4 +1,4 @@
-class ScoreFetcher {
+class ScoreDatabase {
   constructor(client) {
     this.client = client;
   }
@@ -17,8 +17,8 @@ class ScoreFetcher {
       set username=$2, score=scores.score+$3 where scores.id=$1
     `;
 
-    const result = await this.client.query(query, [userId, username, amount]);
+    await this.client.query(query, [userId, username, amount]);
   }
 }
 
-module.exports = { ScoreFetcher };
+module.exports = { ScoreDatabase };
