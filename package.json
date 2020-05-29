@@ -1,0 +1,19 @@
+{
+  "name": "thejudge",
+  "version": "1.0.0",
+  "description": "A discord bot to facilitate a points system",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatMoore/thejudge.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MatMoore/thejudge/issues"
+  },
+  "homepage": "https://github.com/MatMoore/thejudge#readme"
+}
