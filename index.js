@@ -1,15 +1,19 @@
 require("dotenv").config();
 
 const Discord = require("discord.js");
-const client = new Discord.Client();
-
 const { Client } = require("pg");
+const { ScoreFetcher } = require("./data");
+
+const discord = new Discord.Client();
 const db = new Client();
+const scoreFetcher = new ScoreFetcher(db);
+
 db.connect();
 
 const createTable = `
   create table if not exists scores(
-    username varchar primary key,
+    id bigint primary key,
+    username varchar,
     score double precision
   )
 `;
@@ -18,12 +22,10 @@ db.query(createTable, (err, res) => {
   if (err) {
     console.log(err.stack);
   }
-
-  db.end();
 });
 
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+discord.on("ready", () => {
+  console.log(`Logged in as ${discord.user.tag}!`);
 });
 
 const replyHelp = (message) => {
@@ -34,11 +36,24 @@ const replyHelp = (message) => {
   `);
 };
 
-const replyScores = (message) => {
-  message.reply(`Placeholder scores`);
+const replyScores = async (message) => {
+  const result = await scoreFetcher.scores();
+  const rows = result.rows;
+  if (rows.length === 0) {
+    message.reply("no points have been awarded yet!");
+    return;
+  }
+
+  const response = ["here is the current scoreboard:", ""];
+  rows.forEach((row, i) => {
+    response.push(`${i + 1}. ${row.username} with ${row.score} points`);
+  });
+
+  message.reply(response.join("\n"));
+  console.log(result);
 };
 
-client.on("message", (message) => {
+discord.on("message", async (message) => {
   if (message.author.bot) {
     return;
   }
@@ -51,7 +66,7 @@ client.on("message", (message) => {
   }
 
   if (message.content === "!scores") {
-    replyScores(message);
+    await replyScores(message);
     return;
   }
 
@@ -80,4 +95,4 @@ client.on("message", (message) => {
   }
 });
 
-client.login(process.env.DISCORD_TOKEN);
+discord.login(process.env.DISCORD_TOKEN);
