@@ -3,6 +3,25 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+const { Client } = require("pg");
+const db = new Client();
+db.connect();
+
+const createTable = `
+  create table if not exists scores(
+    username varchar primary key,
+    score double precision
+  )
+`;
+
+db.query(createTable, (err, res) => {
+  if (err) {
+    console.log(err.stack);
+  }
+
+  db.end();
+});
+
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });

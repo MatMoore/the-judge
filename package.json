@@ -18,6 +18,7 @@
   "homepage": "https://github.com/MatMoore/thejudge#readme",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "pg": "^8.2.1"
   }
 }

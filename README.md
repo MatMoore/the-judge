@@ -47,14 +47,33 @@ This bot is not set to public, but you can set up your own instance by following
 The app needs the following environment variables to be set:
 
 - DISCORD_TOKEN - the token for the bot you created in the step above
+- PGHOST - database host (default: 'localhost')
+- PGUSER - database user (default: process.env.USER)
+- PGDATABASE - database name (default: process.env.USER)
+- PGPASSWORD - database password (default: null)
+- PGPORT - database port (default: 5432)
 
-When running the app locally, you can set these in a `.env` file:
+For a development environment, you can set these in a `.env` file:
 
 ```
 DISCORD_TOKEN=xxxx
+PGDATABASE=mydatabasename
+...
 ```
 
 ### Running the app
+
+Run the app with:
+
+```
+node index.js
+```
+
+For a development environment, you may want to run with [nodemon](https://github.com/remy/nodemon) for auto-reloading:
+
+```
+nodemon index.js
+```
 
 ## License
 
