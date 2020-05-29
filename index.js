@@ -92,12 +92,15 @@ discord.on("message", async (message) => {
     }
 
     await mentions.forEach(async (mention) => {
-      await scoreFetcher.increment(
-        mention.id,
-        mention.username,
-        numberOfPoints
-      );
-      message.reply(`${numberOfPoints} points to ${mention.username}!`);
+      let actualPoints;
+      if (message.author.id === mention.id) {
+        actualPoints = -numberOfPoints;
+      } else {
+        actualPoints = numberOfPoints;
+      }
+
+      await scoreFetcher.increment(mention.id, mention.username, actualPoints);
+      message.reply(`${actualPoints} points to ${mention.username}!`);
     });
   }
 });
