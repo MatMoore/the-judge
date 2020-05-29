@@ -3,6 +3,7 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const { Client } = require("pg");
 const { ScoreFetcher } = require("./data");
+const { parseCommands, commands } = require("./commands");
 
 const discord = new Discord.Client();
 const db = new Client();
@@ -50,58 +51,43 @@ const replyScores = async (message) => {
   });
 
   message.reply(response.join("\n"));
-  console.log(result);
+};
+
+const replyGive = async (message, { mentions, numberOfPoints, author }) => {
+  await mentions.forEach(async (mention) => {
+    let actualPoints;
+    if (author.id === mention.id) {
+      actualPoints = -numberOfPoints;
+    } else {
+      actualPoints = numberOfPoints;
+    }
+
+    await scoreFetcher.increment(mention.id, mention.username, actualPoints);
+    message.reply(`${actualPoints} points to ${mention.username}!`);
+  });
 };
 
 discord.on("message", async (message) => {
-  if (message.author.bot) {
+  result = parseCommands(message);
+
+  if (result.error !== undefined) {
+    message.reply(result.error);
     return;
   }
 
-  const pointsCommand = /!give (\d+(\.\d+)?) points/i;
-
-  if (message.content === "!ping") {
-    message.reply("pong");
-    return;
-  }
-
-  if (message.content === "!scores") {
-    await replyScores(message);
-    return;
-  }
-
-  if (message.content === "!help") {
+  if (result.command === commands.HELP_COMMAND) {
     replyHelp(message);
     return;
   }
 
-  if (message.content.startsWith("!give")) {
-    const result = pointsCommand.exec(message.content);
-    if (result === null) {
-      message.reply("your request is DENIED. Try: !give 100 points to @human'");
-      return;
-    }
+  if (result.command === commands.SCORES_COMMAND) {
+    await replyScores(message);
+    return;
+  }
 
-    const numberOfPoints = result[1];
-
-    const mentions = message.mentions.users.array();
-
-    if (mentions.length === 0) {
-      message.reply("your request is DENIED. Try: !give 100 points to @human'");
-      return;
-    }
-
-    await mentions.forEach(async (mention) => {
-      let actualPoints;
-      if (message.author.id === mention.id) {
-        actualPoints = -numberOfPoints;
-      } else {
-        actualPoints = numberOfPoints;
-      }
-
-      await scoreFetcher.increment(mention.id, mention.username, actualPoints);
-      message.reply(`${actualPoints} points to ${mention.username}!`);
-    });
+  if (result.command === commands.GIVE_COMMAND) {
+    await replyGive(message, result);
+    return;
   }
 });
 
