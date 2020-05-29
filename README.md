@@ -2,9 +2,31 @@
 
 ![The Judge in The Good Place](images/the-good-place-2-judge.jpg)
 
-A discord bot to facilitate a points system
+A discord bot to run a points system on your server.
 
 ## Commands
+
+Say "!help" at any time to print the list of commands.
+
+### !scores
+
+Print the scores
+
+### !give
+
+Awards points. You can award any number of points.
+
+Format: `!give {number} points to {user}[...]`
+
+For example:
+
+```
+!give 100 points to @user
+```
+
+```
+!give 0.0000001 points to @user for participating
+```
 
 ## Setup instructions
 
