@@ -15,9 +15,22 @@ A discord bot to facilitate a points system
 
 ### Discord setup
 
+- [Create a bot application for Discord](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)
+- [Invite the bot to your server](https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links)
+
 ### Environment
 
-### Running the bot
+The app needs the following environment variables to be set:
+
+- DISCORD_TOKEN - the token for the bot you created in the step above
+
+When running the app locally, you can set these in a `.env` file:
+
+```
+DISCORD_TOKEN=xxxx
+```
+
+### Running the app
 
 ## License
 

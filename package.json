@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/MatMoore/thejudge/issues"
   },
-  "homepage": "https://github.com/MatMoore/thejudge#readme"
+  "homepage": "https://github.com/MatMoore/thejudge#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0"
+  }
 }
