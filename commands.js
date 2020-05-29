@@ -34,7 +34,7 @@ const parseScores = (message) => {
 const parseGive = (message) => {
   const pointsCommand = /!give (\d+(\.\d+)?) points/i;
   const helpMessage = {
-    error: "your request is DENIED. Try: !give 100 points to @human'",
+    error: "your request is DENIED. Try: !give 100 points to @human",
   };
 
   const result = pointsCommand.exec(message.content);
